@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave</title>
+    <link rel="stylesheet" href="lms.css">
+</head>
+
+<body>
+    <div class="main-box">
+        <div class="header">
+            <h1>LMS</h1>
+
+            <p id="name">Your paragraph content goes here.</p>
+            <p id="mail">Your paragraph content goes here.</p>
+
+
+
+
+        </div>
+        <div class="menu">
+            <img src="./assets/hamburgermenu.png" id="hamburger-menu" onclick="openmenu()">
+            <h2>Apply Leave</h2>
+            <div id="menu-options">
+                <span onclick="closeMenu()">X</span>
+                <ul>
+                    <a href="lms.html">
+                        
+                        <li>
+                            <p>Dashboard</p>
+                        </li>
+                    </a>
+                    <a href="/">
+
+                        <li>
+                            <p>Apply Leave</p>
+                        </li>
+                    </a>
+                    <a href="/">
+                        <li>
+                            <p>CompOff Management </p>
+                        </li>
+                    </a>
+                    <a href="/">
+                        <li>
+                            <p> Leave Records</p>
+                        </li>
+                    </a>
+                    <a href="/">
+                        <li>
+                            <p>Summary </p>
+                        </li>
+                    </a>
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="inputfields">
+            <form id="applyleaves">
+                <span>Select type of Leave </span><select class="typesofleaves" required>
+                    <option>Sick </option>
+                    <option>Casual </option>
+                    <option>Privilege </option>
+                    <option>CompOff </option>
+                    <option>Paternity </option>
+                    <option>Marriage </option>
+
+                </select>
+                <span>NO Of Days</span><select id="days" required>
+                    <option>
+                        0.5
+                    </option>
+                    <option>
+                        1
+                    </option>
+                </select>
+                <span>Select StartDate</span><input type="date" id="startDate" placeholder="Enter Start Date" required>
+                <span>Select End Date </span><input type="date" id="endDate" placeholder="Enter Start Date" required>
+                <span>Reason For Leave</span><input type="text" id="reason" placeholder="Enter Reason For Leave"
+                    required>
+
+                <span>Applying To Manager </span><select class = "manager" required>
+                    <option>Rakesh </option>
+                    <option>Shreya </option>
+                    <option>Kedhar </option>
+                    <option>Akash </option>
+                    <option>Manoj </option>
+
+
+                </select>
+
+                <div class="addtoqueue">
+
+                </div>
+                <input type="submit" id="submit"  value="Submit">
+                <input type="button" id="cancel" onclick="cancelLeave()" value="Cancel">
+
+            </form>
+
+
+        </div>
+    </div>
+    <script>
+        let hamburgerMenu = document.getElementById("hamburger-menu");
+        let menu = document.getElementById("menu-options");
+        let container = document.getElementsByClassName("container");
+        const userName = document.getElementById("name");
+        const userMail = document.getElementById("mail");
+
+        let form = document.getElementById("applyleaves");
+        //header.innerHTML = email;
+        function openmenu() {
+            menu.style.visibility = "visible";
+            document.body.classList.add("container-scroll");
+        }
+        function closeMenu() {
+            menu.style.visibility = "hidden";
+        }
+        var startDateInput = document.getElementById("startDate");
+        var endDateInput = document.getElementById("endDate");
+
+        // Add event listeners to detect changes in the input fields
+        startDateInput.addEventListener("change", validateDateRange);
+        endDateInput.addEventListener("change", validateDateRange);
+
+        function validateDateRange() {
+            // Get the values of startDate and endDate inputs
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            // Compare startDate and endDate
+            if (startDate > endDate) {
+                alert("Start Date cannot be later than End Date");
+                startDateInput.value = "";
+                // You can reset the value of startDateInput or endDateInput here if needed
+            }
+
+
+            
+        }
+               
+       // Retrieve user details from local storage
+var userDetailsString = localStorage.getItem("userDetails");
+var userDetails = JSON.parse(userDetailsString);
+var validUser = userDetails.some(function(user) {
+        
+        userMail.innerHTML=user.email;
+        userName.innerHTML=user.username;
+
+    });
+
+   
+
+
+        var applyform=document.getElementById("applyleaves");
+        applyform.addEventListener("submit", function (event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Collect data from the form
+    var leaveType = document.querySelector(".typesofleaves").value.trim();
+    var numberOfDays = document.getElementById("days").value.trim();
+    var startDate = document.getElementById("startDate").value.trim();
+    var endDate = document.getElementById("endDate").value.trim();
+    var reason = document.getElementById("reason").value.trim();
+    var leaveStatus = "Pending";
+    var manager = document.querySelector(".manager").value.trim();
+    
+
+    // Check if any of the required fields are empty
+    if (!leaveType || !numberOfDays || !startDate || !endDate || !reason || !manager) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+   
+    // Create a new leave object
+    var leaveData = {
+        leaveType: leaveType,
+        numberOfDays: numberOfDays,
+        startDate: startDate,
+        endDate: endDate,
+        reason: reason,
+        leaveStatus: leaveStatus,
+        manager: manager
+    };
+
+    // Log the leave data before storing
+    console.log("Leave Data:", leaveData);
+
+    // Retrieve existing leave data from localStorage
+    var previousLeaveData = JSON.parse(localStorage.getItem("leaveData")) || [];
+
+    // Combine the new leave data with the existing data
+    var combinedLeaveData = [leaveData, ...previousLeaveData];
+
+    // Store the combined leave data in localStorage
+    localStorage.setItem("leaveData", JSON.stringify(combinedLeaveData));
+    console.log("Combined Leave Data:", combinedLeaveData);
+
+    // Show alert indicating successful leave application
+    alert("Leave applied successfully!");
+
+    // Redirect to the desired page
+    window.location.href = "lms.html";
+});
+
+        // Add event listener to the form for submit event
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <p id="res">Result</p>
+    <script>
+        
+            // Extract data from URL parameters
+            var data = window.location.search;
+            var params = new URLSearchParams(data);
+console.log(params);
+            var name = params.get("username");
+            var email= params.get("email");
+            var contact= params.get("contactno");
+var getData="Name:" + name +"<br>";
+getData += "Email:" + email+"<br>";
+getData += "ContactNo:" + contact+"<br>";
+
+            document.getElementById("res").innerHTML= getData;
+            
+            
+
+            
+            // Display the data
+           
+        
+    </script>
+</body>
+</html>
